@@ -1,12 +1,24 @@
 import pygame
-from Saper.colors import *
-from Saper.Global import *
+from colors import *
+from Global import *
 from .Button import Button
 
 
 class InputBox:
-    def __init__(self, win, box_x, box_y, input_rows, texts, font, max_input, gap, middle_gap, scale_h=2.0,
-                 scale_w=1.1):
+    def __init__(
+        self,
+        win,
+        box_x,
+        box_y,
+        input_rows,
+        texts,
+        font,
+        max_input,
+        gap,
+        middle_gap,
+        scale_h=2.0,
+        scale_w=1.1,
+    ):
         self.win = win
 
         self.box_x = box_x
@@ -27,13 +39,18 @@ class InputBox:
         self.scale_h = scale_h
         self.scale_w = scale_w
 
-        self.width = 2 * self.gap + self.max_text.get_width() + middle_gap + self.scale_w * self.max_input.get_width()
+        self.width = (
+            2 * self.gap
+            + self.max_text.get_width()
+            + middle_gap
+            + self.scale_w * self.max_input.get_width()
+        )
         self.height = self.scale_h * self.max_text.get_height() * self.rows
 
         self.add_rows_y()
 
         # submit button
-        name = "SUBMIT"
+        name = 'SUBMIT'
         text = self.font.render(name, True, BLACK)
         width = text.get_width() * self.scale_w
         height = text.get_height()
@@ -55,7 +72,10 @@ class InputBox:
             self.input_boxes.append(box)
 
     def add_rows_y(self):
-        y = self.box_y + (self.height / (self.input_rows + 1) - self.max_text.get_height()) / 2
+        y = (
+            self.box_y
+            + (self.height / (self.input_rows + 1) - self.max_text.get_height()) / 2
+        )
 
         for _ in range(self.input_rows):
             self.rows_y.append(y)
@@ -68,7 +88,13 @@ class InputBox:
         self.draw_submit()
 
     def draw_main_box(self):
-        pygame.draw.rect(self.win, BLACK, (self.box_x, self.box_y, self.width, self.height), 0, self.roundness)
+        pygame.draw.rect(
+            self.win,
+            BLACK,
+            (self.box_x, self.box_y, self.width, self.height),
+            0,
+            self.roundness,
+        )
 
     def draw_texts(self):
         x = self.box_x + self.gap
@@ -79,7 +105,13 @@ class InputBox:
 
     def draw_submit(self):
         x, y = self.submit.pos
-        pygame.draw.rect(self.win, WHITE, (self.submit.pos, (self.submit.width, self.submit.height)), 0, self.roundness)
+        pygame.draw.rect(
+            self.win,
+            WHITE,
+            (self.submit.pos, (self.submit.width, self.submit.height)),
+            0,
+            self.roundness,
+        )
         x += (self.submit.width - self.submit.text.get_width()) / 2
         self.win.blit(self.submit.text, (x, y))
 
@@ -92,10 +124,15 @@ class InputBox:
                 x, y = button.x - width, button.y - width
                 w, h = button.width + 2 * width, button.height + 2 * width
                 pygame.draw.rect(self.win, GRAY, (x, y, w, h), width)
-            pygame.draw.rect(self.win, WHITE, (button.x, button.y, button.width, button.height))
+            pygame.draw.rect(
+                self.win, WHITE, (button.x, button.y, button.width, button.height)
+            )
             x = button.x + (button.width - text.get_width()) / 2
             y = button.y + (button.height - text.get_height()) / 2
             self.win.blit(text, (x, y))
 
     def collision(self, x, y):
-        return self.box_x <= x <= self.box_x + self.width and self.box_y <= y <= self.box_y + self.height
+        return (
+            self.box_x <= x <= self.box_x + self.width
+            and self.box_y <= y <= self.box_y + self.height
+        )

@@ -1,12 +1,23 @@
 import pygame
-from Saper.colors import *
-from Saper.Global import *
+from colors import *
+from Global import *
 from .Button import Button
 
 
 class Board:
-
-    def __init__(self, win, rows, cols, width, height, scale, sq_size, line, roundness, level_name):
+    def __init__(
+        self,
+        win,
+        rows,
+        cols,
+        width,
+        height,
+        scale,
+        sq_size,
+        line,
+        roundness,
+        level_name,
+    ):
         self.win = win
         self.rows = rows
         self.cols = cols
@@ -31,14 +42,14 @@ class Board:
         self.upper_height = 2 * self.sq_size
 
         # importing flag and timer
-        self.flag = self.import_photo(photos["flag"])
-        self.timer = self.import_photo(photos["timer"])
+        self.flag = self.import_photo(photos['flag'])
+        self.timer = self.import_photo(photos['timer'])
         self.time = 0
         self.flags = 5
 
         # level
         self.level = level_name
-        self.levels_names = ["EASY", "MEDIUM", "HARD", "CUSTOM"]
+        self.levels_names = ['EASY', 'MEDIUM', 'HARD', 'CUSTOM']
         self.levels = []
 
         text = self.level_font.render(self.level, True, WHITE)
@@ -49,7 +60,9 @@ class Board:
         w, h = text.get_width() * scale_w, text.get_height() * scale_h
         x, y = (self.upper_width / 3 - w) / 2, (self.upper_height - h) / 2
 
-        self.level_button = Button(x, y, w, h, text, self.level, WHITE, scale_w, scale_h)
+        self.level_button = Button(
+            x, y, w, h, text, self.level, WHITE, scale_w, scale_h
+        )
 
         self.add_level_buttons()
 
@@ -94,9 +107,13 @@ class Board:
 
     def display_upper(self, temp, photo, part):
         text = self.upper_font.render(temp, True, WHITE)
-        test_text = self.upper_font.render("000", True, WHITE)
+        test_text = self.upper_font.render('000', True, WHITE)
 
-        x = part * self.upper_width + (1 / 3 * self.upper_width - (photo.get_width() + test_text.get_width())) / 2
+        x = (
+            part * self.upper_width
+            + (1 / 3 * self.upper_width - (photo.get_width() + test_text.get_width()))
+            / 2
+        )
         y = (self.upper_height - photo.get_height()) / 2
         self.win.blit(photo, (x, y))
 
@@ -113,7 +130,9 @@ class Board:
         end_x, end_y = start_x, self.height
 
         for _ in range(count):
-            pygame.draw.line(self.win, DARK_GREY, (start_x, start_y), (end_x, end_y), self.line)
+            pygame.draw.line(
+                self.win, DARK_GREY, (start_x, start_y), (end_x, end_y), self.line
+            )
             start_x += self.line + self.sq_size
             end_x = start_x
 
@@ -123,7 +142,9 @@ class Board:
         end_x, end_y = self.width, start_y
 
         for _ in range(count):
-            pygame.draw.line(self.win, DARK_GREY, (start_x, start_y), (end_x, end_y), self.line)
+            pygame.draw.line(
+                self.win, DARK_GREY, (start_x, start_y), (end_x, end_y), self.line
+            )
             start_y += self.line + self.sq_size
             end_y = start_y
 
@@ -135,30 +156,34 @@ class Board:
         # pygame.draw.line(self.win, BLACK, (self.width * 2/3, 0), (self.width * 2/3, self.height))
 
     def draw_upper(self):
-        pygame.draw.rect(self.win, DARK_GREY, (0, 0, self.upper_width, self.upper_height))
+        pygame.draw.rect(
+            self.win, DARK_GREY, (0, 0, self.upper_width, self.upper_height)
+        )
 
         # level
         x, y = self.level_button.pos
         w, h = self.level_button.width, self.level_button.height
         pygame.draw.rect(self.win, BLACK, (x, y, w, h), 0, self.roundness)
         text = self.level_button.text
-        x, y = (self.upper_width / 3 - text.get_width()) / 2, (self.upper_height - text.get_height()) / 2
+        x, y = (
+            (self.upper_width / 3 - text.get_width()) / 2,
+            (self.upper_height - text.get_height()) / 2,
+        )
         self.win.blit(text, (x, y))
 
         # flags
         flags = str(self.flags)
-        while len(flags) < 3 and flags[0] != "-":
-            flags = "0" + flags
+        while len(flags) < 3 and flags[0] != '-':
+            flags = '0' + flags
         self.display_upper(flags, self.flag, 1 / 3)
 
         # time
         time = str(self.time)
         while len(time) < 3 and len(time) != 4:
-            time = "0" + time
+            time = '0' + time
         self.display_upper(time, self.timer, 2 / 3)
 
     def draw_levels(self):
-
         pygame.draw.rect(self.win, BLACK, self.bg_levels_rect, 0, self.roundness)
 
         for button in self.levels:

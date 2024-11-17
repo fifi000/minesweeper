@@ -1,5 +1,5 @@
 import pygame
-from colors import *
+import colors as colors
 from .Button import Button
 
 
@@ -20,8 +20,10 @@ class Box:
     ):
         self.win = win
         self.width, self.height = win_width, win_height
-        self.main_msg = font.render(text, True, WHITE)
-        self.best_time_msg = best_time_font.render(f'Best: {best_time}s', True, WHITE)
+        self.main_msg = font.render(text, True, colors.WHITE)
+        self.best_time_msg = best_time_font.render(
+            f'Best: {best_time}s', True, colors.WHITE
+        )
         self.play = play_obj
         self.repeat = repeat_obj
         self.best_time = best_time
@@ -56,7 +58,7 @@ class Box:
         # background
         pygame.draw.rect(
             self.win,
-            BLACK,
+            colors.BLACK,
             (self.box_x, self.box_y, self.box_w, self.box_h),
             0,
             self.roundness,

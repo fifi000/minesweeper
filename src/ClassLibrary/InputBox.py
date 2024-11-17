@@ -1,5 +1,5 @@
 import pygame
-from colors import *
+import colors as colors
 from Global import *
 from .Button import Button
 
@@ -31,8 +31,8 @@ class InputBox:
         self.font = font
         self.roundness = 30
 
-        self.max_text = self.font.render(find_longest(self.texts), True, WHITE)
-        self.max_input = self.font.render(max_input, True, WHITE)
+        self.max_text = self.font.render(max(self.texts), True, colors.WHITE)
+        self.max_input = self.font.render(max_input, True, colors.WHITE)
 
         self.gap = gap
         self.middle_gap = middle_gap
@@ -51,7 +51,7 @@ class InputBox:
 
         # submit button
         name = 'SUBMIT'
-        text = self.font.render(name, True, BLACK)
+        text = self.font.render(name, True, colors.BLACK)
         width = text.get_width() * self.scale_w
         height = text.get_height()
         x = self.box_x + self.width - self.gap - width
@@ -90,7 +90,7 @@ class InputBox:
     def draw_main_box(self):
         pygame.draw.rect(
             self.win,
-            BLACK,
+            colors.BLACK,
             (self.box_x, self.box_y, self.width, self.height),
             0,
             self.roundness,
@@ -100,14 +100,14 @@ class InputBox:
         x = self.box_x + self.gap
 
         for i, text in enumerate(self.texts):
-            text = self.font.render(text.upper(), True, WHITE)
+            text = self.font.render(text.upper(), True, colors.WHITE)
             self.win.blit(text, (x, self.rows_y[i]))
 
     def draw_submit(self):
         x, y = self.submit.pos
         pygame.draw.rect(
             self.win,
-            WHITE,
+            colors.WHITE,
             (self.submit.pos, (self.submit.width, self.submit.height)),
             0,
             self.roundness,
@@ -119,13 +119,15 @@ class InputBox:
         width = 3
 
         for button in self.input_boxes:
-            text = self.font.render(button.name, True, BLACK)
+            text = self.font.render(button.name, True, colors.BLACK)
             if button.clicked:
                 x, y = button.x - width, button.y - width
                 w, h = button.width + 2 * width, button.height + 2 * width
-                pygame.draw.rect(self.win, GRAY, (x, y, w, h), width)
+                pygame.draw.rect(self.win, colors.GRAY, (x, y, w, h), width)
             pygame.draw.rect(
-                self.win, WHITE, (button.x, button.y, button.width, button.height)
+                self.win,
+                colors.WHITE,
+                (button.x, button.y, button.width, button.height),
             )
             x = button.x + (button.width - text.get_width()) / 2
             y = button.y + (button.height - text.get_height()) / 2

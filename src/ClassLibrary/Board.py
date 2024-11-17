@@ -1,6 +1,6 @@
 import pygame
-from colors import *
-from Global import *
+import colors as colors
+from Global import photos
 from .Button import Button
 
 
@@ -52,7 +52,7 @@ class Board:
         self.levels_names = ['EASY', 'MEDIUM', 'HARD', 'CUSTOM']
         self.levels = []
 
-        text = self.level_font.render(self.level, True, WHITE)
+        text = self.level_font.render(self.level, True, colors.WHITE)
         scale_w, scale_h = 1.6, 2
         if self.level == self.levels_names[-1]:
             scale_w = 1.3
@@ -61,7 +61,7 @@ class Board:
         x, y = (self.upper_width / 3 - w) / 2, (self.upper_height - h) / 2
 
         self.level_button = Button(
-            x, y, w, h, text, self.level, WHITE, scale_w, scale_h
+            x, y, w, h, text, self.level, colors.WHITE, scale_w, scale_h
         )
 
         self.add_level_buttons()
@@ -76,8 +76,8 @@ class Board:
         return pygame.transform.scale(img.convert_alpha(), (w, h))
 
     def add_bg_levels(self):
-        longest = find_longest(self.levels_names)
-        longest = self.level_font.render(longest, True, WHITE)
+        longest = max(self.levels_names)
+        longest = self.level_font.render(longest, True, colors.WHITE)
 
         width = longest.get_width() * self.level_button.scale_w
         height = self.level_button.height
@@ -89,25 +89,25 @@ class Board:
         return x, y, width, height
 
     def add_level_buttons(self):
-        longest = find_longest(self.levels_names)
-        longest = self.level_font.render(longest, True, WHITE)
+        longest = max(self.levels_names)
+        longest = self.level_font.render(longest, True, colors.WHITE)
         width = longest.get_width() * self.level_button.scale_w
         height = self.level_button.height
         x, y = self.level_button.pos
         y += height * 1.1
         for i in range(len(self.levels_names)):
             name = self.levels_names[i]
-            color = WHITE
+            color = colors.WHITE
             if self.level == name:
-                color = GRAY
+                color = colors.GRAY
             text = self.level_font.render(name, True, color)
             button = Button(x, y, width, height, text, name, color)
             self.levels.append(button)
             y += height
 
     def display_upper(self, temp, photo, part):
-        text = self.upper_font.render(temp, True, WHITE)
-        test_text = self.upper_font.render('000', True, WHITE)
+        text = self.upper_font.render(temp, True, colors.WHITE)
+        test_text = self.upper_font.render('000', True, colors.WHITE)
 
         x = (
             part * self.upper_width
@@ -122,7 +122,7 @@ class Board:
         self.win.blit(text, (x, y))
 
     def draw(self):
-        self.win.fill(GRAY)
+        self.win.fill(colors.GRAY)
 
         # vertical grid lines
         count = self.cols - 1
@@ -131,7 +131,11 @@ class Board:
 
         for _ in range(count):
             pygame.draw.line(
-                self.win, DARK_GREY, (start_x, start_y), (end_x, end_y), self.line
+                self.win,
+                colors.DARK_GREY,
+                (start_x, start_y),
+                (end_x, end_y),
+                self.line,
             )
             start_x += self.line + self.sq_size
             end_x = start_x
@@ -143,7 +147,11 @@ class Board:
 
         for _ in range(count):
             pygame.draw.line(
-                self.win, DARK_GREY, (start_x, start_y), (end_x, end_y), self.line
+                self.win,
+                colors.DARK_GREY,
+                (start_x, start_y),
+                (end_x, end_y),
+                self.line,
             )
             start_y += self.line + self.sq_size
             end_y = start_y
@@ -151,19 +159,19 @@ class Board:
         self.draw_upper()
 
         # test
-        # pygame.draw.line(self.win, BLACK, (self.width / 2, 0), (self.width / 2, self.height))
-        # pygame.draw.line(self.win, BLACK, (self.width * 1/3, 0), (self.width * 1/3, self.height))
-        # pygame.draw.line(self.win, BLACK, (self.width * 2/3, 0), (self.width * 2/3, self.height))
+        # pygame.draw.line(self.win, colors.BLACK, (self.width / 2, 0), (self.width / 2, self.height))
+        # pygame.draw.line(self.win, colors.BLACK, (self.width * 1/3, 0), (self.width * 1/3, self.height))
+        # pygame.draw.line(self.win, colors.BLACK, (self.width * 2/3, 0), (self.width * 2/3, self.height))
 
     def draw_upper(self):
         pygame.draw.rect(
-            self.win, DARK_GREY, (0, 0, self.upper_width, self.upper_height)
+            self.win, colors.DARK_GREY, (0, 0, self.upper_width, self.upper_height)
         )
 
         # level
         x, y = self.level_button.pos
         w, h = self.level_button.width, self.level_button.height
-        pygame.draw.rect(self.win, BLACK, (x, y, w, h), 0, self.roundness)
+        pygame.draw.rect(self.win, colors.BLACK, (x, y, w, h), 0, self.roundness)
         text = self.level_button.text
         x, y = (
             (self.upper_width / 3 - text.get_width()) / 2,
@@ -184,7 +192,7 @@ class Board:
         self.display_upper(time, self.timer, 2 / 3)
 
     def draw_levels(self):
-        pygame.draw.rect(self.win, BLACK, self.bg_levels_rect, 0, self.roundness)
+        pygame.draw.rect(self.win, colors.BLACK, self.bg_levels_rect, 0, self.roundness)
 
         for button in self.levels:
             x, y = button.pos
